@@ -6,11 +6,13 @@ import MessageSection from "@/components/birthday/MessageSection";
 import Footer from "@/components/birthday/Footer";
 import ConfettiEffect from "@/components/birthday/ConfettiEffect";
 import BalloonGame from "@/components/birthday/BalloonGame";
+import CuteBot from "@/components/birthday/CuteBot";
 
 const Index = () => {
   return (
     <div className="min-h-screen overflow-x-hidden">
       <ConfettiEffect />
+      <CuteBot />
       <HeroSection />
       <PhotoGallery />
       <BalloonGame />

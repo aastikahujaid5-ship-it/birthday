@@ -1,8 +1,51 @@
 import { motion } from "framer-motion";
-import { PenLine, Heart } from "lucide-react";
+import { PenLine, Heart, Volume2 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 
 const MessageSection = () => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
+
+  const playMessage = () => {
+    if (isPlaying) {
+      speechSynthesis.cancel();
+      setIsPlaying(false);
+      return;
+    }
+
+    const text = "Happy Birthday Ananya! Wishing you a day filled with love, joy, and beautiful moments!";
+    const utteranceObj = new SpeechSynthesisUtterance(text);
+
+    utteranceObj.rate = 0.9;
+    utteranceObj.pitch = 1.2;
+    utteranceObj.volume = 1;
+
+    const voices = speechSynthesis.getVoices();
+    const femaleVoice = voices.find(voice =>
+      voice.name.includes('Female') ||
+      voice.name.includes('female') ||
+      voice.name.includes('woman') ||
+      voice.name.includes('Woman')
+    ) || voices.find(voice => voice.name.includes('Google UK English Female')) || voices[1];
+
+    if (femaleVoice) {
+      utteranceObj.voice = femaleVoice;
+    }
+
+    utteranceObj.onend = () => {
+      setIsPlaying(false);
+    };
+
+    utteranceObj.onerror = () => {
+      setIsPlaying(false);
+    };
+
+    speechSynthesis.speak(utteranceObj);
+    setIsPlaying(true);
+    setUtterance(utteranceObj);
+  };
+
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-background to-pink-light/30">
       <div className="max-w-4xl mx-auto">
@@ -17,9 +60,23 @@ const MessageSection = () => {
             <PenLine className="w-6 h-6 text-primary" />
             <span className="text-primary font-medium uppercase tracking-wider text-sm">Personal Message</span>
           </div>
-          <h2 className="font-script text-5xl md:text-6xl text-gradient mb-4">
+          <h2 className="font-script text-5xl md:text-6xl text-gradient mb-6">
             A Letter For You
           </h2>
+
+          <motion.button
+            onClick={playMessage}
+            className={`inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all shadow-lg ${
+              isPlaying
+                ? "bg-secondary text-secondary-foreground"
+                : "bg-primary text-primary-foreground hover:shadow-xl"
+            }`}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Volume2 className="w-5 h-5" />
+            {isPlaying ? "Stop Message" : "Play Message"}
+          </motion.button>
         </motion.div>
 
         <motion.div

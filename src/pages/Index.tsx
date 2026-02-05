@@ -5,6 +5,7 @@ import Countdown from "@/components/birthday/Countdown";
 import MessageSection from "@/components/birthday/MessageSection";
 import Footer from "@/components/birthday/Footer";
 import ConfettiEffect from "@/components/birthday/ConfettiEffect";
+import BalloonGame from "@/components/birthday/BalloonGame";
 
 const Index = () => {
   return (
@@ -12,6 +13,7 @@ const Index = () => {
       <ConfettiEffect />
       <HeroSection />
       <PhotoGallery />
+      <BalloonGame />
       <WishesSection />
       <Countdown />
       <MessageSection />

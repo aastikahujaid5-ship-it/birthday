@@ -7,7 +7,6 @@ import ananya2 from "@/assets/ananya-2.jpeg";
 import ananya3 from "@/assets/ananya-3.jpeg";
 import ananya4 from "@/assets/ananya-4.jpeg";
 import ananya5 from "@/assets/ananya-5.jpeg";
-import ananya6 from "@/assets/ananya-6.jpeg";
 
 const photos = [
   { id: 1, src: ananya1, caption: "Shopping vibes ✨" },
@@ -15,7 +14,6 @@ const photos = [
   { id: 3, src: ananya3, caption: "Night out 💜" },
   { id: 4, src: ananya4, caption: "Mountain adventures 🏔️" },
   { id: 5, src: ananya5, caption: "Looking stunning 💕" },
-  { id: 6, src: ananya6, caption: "Beautiful moments 🌟" },
 ];
 
 const PhotoGallery = () => {
@@ -41,42 +39,82 @@ const PhotoGallery = () => {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {photos.map((photo, index) => (
             <motion.div
               key={photo.id}
               className="group relative"
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30, rotateY: -10 }}
+              whileInView={{ opacity: 1, y: 0, rotateY: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+              transition={{ duration: 0.6, delay: index * 0.15, type: "spring" }}
+              whileHover={{ scale: 1.05, rotateY: 5, z: 50 }}
             >
-              <div className="relative overflow-hidden rounded-2xl shadow-lg">
+              <motion.div
+                className="relative overflow-hidden rounded-3xl shadow-2xl border-4 border-white/20"
+                animate={{
+                  boxShadow: [
+                    "0 20px 40px rgba(255, 105, 180, 0.3)",
+                    "0 20px 40px rgba(147, 112, 219, 0.3)",
+                    "0 20px 40px rgba(255, 215, 0, 0.3)",
+                    "0 20px 40px rgba(255, 105, 180, 0.3)",
+                  ],
+                }}
+                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+              >
                 <AspectRatio ratio={3/4}>
-                  <img 
-                    src={photo.src} 
+                  <img
+                    src={photo.src}
                     alt={`Ananya - ${photo.caption}`}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110 group-hover:brightness-110"
                   />
                 </AspectRatio>
-                
+
                 {/* Overlay on hover */}
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end justify-center pb-8">
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-secondary/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-end pb-8">
                   <motion.div
-                    initial={{ y: 20, opacity: 0 }}
+                    initial={{ y: 30, opacity: 0 }}
                     whileHover={{ y: 0, opacity: 1 }}
-                    className="flex items-center gap-2 text-primary-foreground"
+                    transition={{ duration: 0.3 }}
+                    className="flex flex-col items-center gap-3"
                   >
-                    <Heart className="w-5 h-5 fill-primary-foreground" />
-                    <span className="font-medium">{photo.caption}</span>
+                    <motion.div
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 1, repeat: Infinity }}
+                    >
+                      <Heart className="w-8 h-8 fill-primary-foreground text-primary-foreground" />
+                    </motion.div>
+                    <span className="font-semibold text-lg text-primary-foreground">{photo.caption}</span>
                   </motion.div>
                 </div>
-              </div>
 
-              {/* Decorative corner */}
-              <div className="absolute -top-2 -right-2 w-8 h-8 bg-accent rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-accent-foreground text-xs font-bold">{index + 1}</span>
-              </div>
+                {/* Shimmer effect */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 animate-shimmer" />
+                </div>
+              </motion.div>
+
+              {/* Decorative corner with animation */}
+              <motion.div
+                className="absolute -top-3 -right-3 w-12 h-12 bg-gradient-to-br from-accent to-gold rounded-full flex items-center justify-center shadow-2xl"
+                animate={{ rotate: [0, 360] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              >
+                <span className="text-accent-foreground text-sm font-bold">{index + 1}</span>
+              </motion.div>
+
+              {/* Corner sparkles */}
+              <motion.div
+                className="absolute -top-1 -left-1"
+                animate={{
+                  scale: [1, 1.5, 1],
+                  rotate: [0, 180, 360],
+                  opacity: [0.5, 1, 0.5],
+                }}
+                transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
+              >
+                <div className="w-4 h-4 bg-accent rounded-full blur-sm" />
+              </motion.div>
             </motion.div>
           ))}
         </div>
